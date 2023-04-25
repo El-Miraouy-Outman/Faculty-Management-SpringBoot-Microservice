@@ -38,6 +38,6 @@ public class NoteController  {
 
     @PutMapping("/{idStudent}/{idModule}")
     public NoteResponseDto updaeNote(Long idStudent, Long idModule) throws NoteNotFound {
-        return null;
+        return noteService.updaeNote(idStudent,idModule);
     }
 }
