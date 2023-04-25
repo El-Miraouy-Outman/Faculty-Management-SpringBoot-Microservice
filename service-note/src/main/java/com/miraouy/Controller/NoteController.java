@@ -25,7 +25,7 @@ public class NoteController  {
 
     @GetMapping("/{idStudent}/{idModule}")
     public NoteResponseDto findNote(@PathVariable Long idStudent,@PathVariable Long idModule) throws NoteNotFound {
-        return null;
+        return noteService.findNote(idStudent,idModule);
     }
 
     @GetMapping

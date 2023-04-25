@@ -17,7 +17,7 @@ public class ModuleF {
     private Long idModule;
     private  String name;
     @ManyToMany(mappedBy = "modules")
-   private List<Filiere> filieres;
+    private List<Filiere> filieres;
     @OneToMany(mappedBy = "module")
     private  List<Note> notes;
 }
