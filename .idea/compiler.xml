@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="service-note" />
+        <module name="servie-etudiant" />
+        <module name="config-service" />
+        <module name="service-gateway" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="config-service" target="17" />
+      <module name="gestion-etudiant" target="17" />
+      <module name="service-gateway" target="17" />
+      <module name="service-note" target="17" />
+      <module name="servie-etudiant" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="config-service" options="-parameters" />
+      <module name="gestion-etudiant" options="-parameters" />
+      <module name="service-gateway" options="-parameters" />
+      <module name="service-note" options="-parameters" />
+      <module name="servie-etudiant" options="-parameters" />
+    </option>
+  </component>
+</project>
