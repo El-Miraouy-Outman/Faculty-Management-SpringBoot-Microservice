@@ -18,7 +18,7 @@ public class NoteController  {
 
     @PostMapping
     public NoteResponseDto addNote(@RequestBody NoteRequestDto note) {
-        System.out.println("lmlawi");
+        System.out.println("bonsoir bonjor");
         return noteService.addNote(note);
     }
 
