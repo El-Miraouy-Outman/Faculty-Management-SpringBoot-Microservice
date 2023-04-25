@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/notes")
 @CrossOrigin("*")
 public class NoteController  {
+
     private NoteService noteService;
 
     public NoteController(NoteService noteService) {
+        System.out.println("l9lawi");
         this.noteService = noteService;
     }
 
@@ -23,7 +25,7 @@ public class NoteController  {
 
     @GetMapping("/{idStudent}/{idModule}")
     public NoteResponseDto findNote(@PathVariable Long idStudent,@PathVariable Long idModule) throws NoteNotFound {
-        return noteService.findNote(idStudent,idModule);
+        return null;
     }
 
     @GetMapping
@@ -33,11 +35,11 @@ public class NoteController  {
 
     @DeleteMapping("/{idStudent}/{idModule}")
     public NoteResponseDto deleteNote(Long idStudent, Long idModule) throws NoteNotFound {
-        return noteService.deleteNote(idStudent,idModule);
+        return null;
     }
 
     @PutMapping("/{idStudent}/{idModule}")
     public NoteResponseDto updaeNote(Long idStudent, Long idModule) throws NoteNotFound {
-        return noteService.updaeNote(idStudent,idModule);
+        return null;
     }
 }
