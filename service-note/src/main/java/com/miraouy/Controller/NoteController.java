@@ -33,7 +33,7 @@ public class NoteController  {
 
     @DeleteMapping("/{idStudent}/{idModule}")
     public NoteResponseDto deleteNote(Long idStudent, Long idModule) throws NoteNotFound {
-        return null;
+        return noteService.deleteNote(idStudent,idModule);
     }
 
     @PutMapping("/{idStudent}/{idModule}")
