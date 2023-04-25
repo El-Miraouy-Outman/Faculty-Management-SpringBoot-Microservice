@@ -10,11 +10,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/notes")
 @CrossOrigin("*")
 public class NoteController  {
-
     private NoteService noteService;
 
     public NoteController(NoteService noteService) {
-        System.out.println("l9lawi");
         this.noteService = noteService;
     }
 
