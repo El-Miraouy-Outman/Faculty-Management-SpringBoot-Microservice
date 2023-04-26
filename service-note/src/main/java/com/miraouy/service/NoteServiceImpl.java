@@ -7,13 +7,11 @@ import com.miraouy.model.ModuleF;
 import com.miraouy.model.Note;
 import com.miraouy.repository.ModuleRepository;
 import com.miraouy.repository.NoteRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@Slf4j
 public class NoteServiceImpl implements NoteService{
     private final ModuleRepository moduleRepository;
     private final NoteRepository noteRepository;
@@ -25,8 +23,6 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public NoteResponseDto addNote(NoteRequestDto noteRequestDto) {
-        log.warn("{}",noteRequestDto.getIdModule());
-
         ModuleF module=moduleRepository.findById(noteRequestDto.getIdModule()).get();
         Note note=Note.builder()
                 .note(noteRequestDto.getNote())
@@ -49,8 +45,6 @@ public class NoteServiceImpl implements NoteService{
                 .filter(noteitem -> noteitem.getModule().getIdModule()==idModule)
                 .findFirst()
                .orElse(null);
-       if(note==null)
-           throw new NoteNotFound("note not found");
        //get student by Id
         NoteResponseDto noteResponseDto = NoteResponseDto
                 .builder()
