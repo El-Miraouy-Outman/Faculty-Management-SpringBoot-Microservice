@@ -24,12 +24,15 @@ public class NoteServiceImpl implements NoteService{
     @Override
     public NoteResponseDto addNote(NoteRequestDto noteRequestDto) {
         ModuleF module=moduleRepository.findById(noteRequestDto.getIdModule()).get();
+        System.out.println(module);
+        System.out.println("helloooo****");
         Note note=Note.builder()
                 .note(noteRequestDto.getNote())
                 .module(module)
                 .idStudent(noteRequestDto.getIdStudent())
                 .build();
         Note noteSave=noteRepository.save(note);
+        System.out.println("hello 2");
         // traitement pour chercher l'etudiant apres la construction de l'autre microservice
 
         return NoteResponseDto.builder()
