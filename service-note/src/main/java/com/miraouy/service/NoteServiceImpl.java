@@ -7,13 +7,11 @@ import com.miraouy.model.ModuleF;
 import com.miraouy.model.Note;
 import com.miraouy.repository.ModuleRepository;
 import com.miraouy.repository.NoteRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@Slf4j
 public class NoteServiceImpl implements NoteService{
     private final ModuleRepository moduleRepository;
     private final NoteRepository noteRepository;
@@ -25,15 +23,16 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public NoteResponseDto addNote(NoteRequestDto noteRequestDto) {
-        log.warn("{}",noteRequestDto.getIdModule());
-
         ModuleF module=moduleRepository.findById(noteRequestDto.getIdModule()).get();
+        System.out.println(module);
+        System.out.println("helloooo****");
         Note note=Note.builder()
                 .note(noteRequestDto.getNote())
                 .module(module)
                 .idStudent(noteRequestDto.getIdStudent())
                 .build();
         Note noteSave=noteRepository.save(note);
+        System.out.println("hello 2");
         // traitement pour chercher l'etudiant apres la construction de l'autre microservice
 
         return NoteResponseDto.builder()
@@ -49,8 +48,6 @@ public class NoteServiceImpl implements NoteService{
                 .filter(noteitem -> noteitem.getModule().getIdModule()==idModule)
                 .findFirst()
                .orElse(null);
-       if(note==null)
-           throw new NoteNotFound("note not found");
        //get student by Id
         NoteResponseDto noteResponseDto = NoteResponseDto
                 .builder()
