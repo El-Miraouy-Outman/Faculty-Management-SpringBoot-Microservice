@@ -6,6 +6,7 @@ import com.miraouy.Exception.Note.NoteNotFound;
 import com.miraouy.dto.Request.NoteRequestDto;
 import com.miraouy.dto.Response.NoteResponseDto;
 import com.miraouy.service.NoteService;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/notes")
 @CrossOrigin("*")
+@RefreshScope
 public class NoteController  {
     private final NoteService noteService;
 
