@@ -1,5 +1,6 @@
-package com.miraouy.Exception;
+package com.miraouy.Exception.Note;
 
+import com.miraouy.Exception.MessageError;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

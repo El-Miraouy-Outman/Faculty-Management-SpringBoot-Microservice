@@ -1,24 +1,32 @@
 package com.miraouy.service;
 
-import com.miraouy.Exception.NoteNotFound;
+import com.miraouy.Exception.Filiere.FiliereNotFound;
+import com.miraouy.Exception.ModuleF.ModuleNotFound;
+import com.miraouy.Exception.Note.NoteNotFound;
 import com.miraouy.dto.Request.NoteRequestDto;
 import com.miraouy.dto.Response.NoteResponseDto;
+import com.miraouy.model.Filiere;
 import com.miraouy.model.ModuleF;
 import com.miraouy.model.Note;
+import com.miraouy.repository.FiliereRepository;
 import com.miraouy.repository.ModuleRepository;
 import com.miraouy.repository.NoteRepository;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class NoteServiceImpl implements NoteService{
     private final ModuleRepository moduleRepository;
     private final NoteRepository noteRepository;
+    private final FiliereRepository filiereRepository;
 
-    public NoteServiceImpl(ModuleRepository moduleRepository, NoteRepository noteRepository) {
+    public NoteServiceImpl(ModuleRepository moduleRepository, NoteRepository noteRepository, FiliereRepository filiereRepository) {
         this.moduleRepository = moduleRepository;
         this.noteRepository = noteRepository;
+        this.filiereRepository = filiereRepository;
     }
 
     @Override
@@ -42,25 +50,40 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public NoteResponseDto findNote(Long idStudent, Long idModule) throws NoteNotFound {
+    public NoteResponseDto findNoteByStudentAndModule(Long idStudent, Long idModule) throws NoteNotFound {
         List<Note> listNotes = noteRepository.findByIdStudent(idStudent);
        Note note= listNotes.stream()
                 .filter(noteitem -> noteitem.getModule().getIdModule()==idModule)
                 .findFirst()
                .orElse(null);
-       //get student by Id
+       if(note==null)
+           throw new NoteNotFound("note not exist");
         NoteResponseDto noteResponseDto = NoteResponseDto
                 .builder()
                 .note(note.getNote())
-                //.student(student)
+                .idStudent(idStudent)
                     .build();
         return noteResponseDto;
     }
 
     @Override
-    public NoteResponseDto findAllNotes() {
+    public List<NoteResponseDto> findNotesEtudiant(Long idStudent) {
+        //get the student info
+        //get the filiere of the student
+        //get modules Ids
+        //for each module find note by idStudentAndidModules
+        //store notes in a List of NoteResponse and return it
         return null;
     }
+
+    @Override
+    public List<NoteResponseDto> findNoteFiliereAndModule(Long idFiliere, Long idModule) throws FiliereNotFound, ModuleNotFound {
+        Filiere filiere = filiereRepository.findById(idFiliere).orElseThrow(() -> new FiliereNotFound("Filiere not found"));
+        ModuleF module = moduleRepository.findById(idModule).orElseThrow(() -> new ModuleNotFound("Module not found"));
+        List<Note> notes = noteRepository.findByModuleAndFiliere(module, filiere);
+        return notes.stream().map(note -> new NoteResponseDto(note.getNote(), note.getIdStudent())).collect(Collectors.toList());
+    }
+
 
     @Override
     public NoteResponseDto deleteNote(Long idStudent,Long idModule) throws NoteNotFound {

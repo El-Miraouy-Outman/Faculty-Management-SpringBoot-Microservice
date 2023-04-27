@@ -17,4 +17,7 @@ public class Note {
     @ManyToOne
     private ModuleF module;
 
+    @ManyToOne
+    private Filiere filiere;
+
 }
