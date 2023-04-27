@@ -7,5 +7,6 @@ public class Student {
     private String apogee;
     private  String name;
     private String prenom;
+    private float age;
 
 }
