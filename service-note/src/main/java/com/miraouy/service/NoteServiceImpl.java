@@ -1,5 +1,6 @@
 package com.miraouy.service;
 
+import com.miraouy.ClientFeign.Student;
 import com.miraouy.Exception.Filiere.FiliereNotFound;
 import com.miraouy.Exception.ModuleF.ModuleNotFound;
 import com.miraouy.Exception.Note.NoteNotFound;
@@ -11,7 +12,6 @@ import com.miraouy.model.Note;
 import com.miraouy.repository.FiliereRepository;
 import com.miraouy.repository.ModuleRepository;
 import com.miraouy.repository.NoteRepository;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,11 +22,13 @@ public class NoteServiceImpl implements NoteService{
     private final ModuleRepository moduleRepository;
     private final NoteRepository noteRepository;
     private final FiliereRepository filiereRepository;
+    private final StudentService studentService;
 
-    public NoteServiceImpl(ModuleRepository moduleRepository, NoteRepository noteRepository, FiliereRepository filiereRepository) {
+    public NoteServiceImpl(ModuleRepository moduleRepository, NoteRepository noteRepository, FiliereRepository filiereRepository, StudentService studentService) {
         this.moduleRepository = moduleRepository;
         this.noteRepository = noteRepository;
         this.filiereRepository = filiereRepository;
+        this.studentService = studentService;
     }
 
     @Override
@@ -52,6 +54,7 @@ public class NoteServiceImpl implements NoteService{
     @Override
     public NoteResponseDto findNoteByStudentAndModule(Long idStudent, Long idModule) throws NoteNotFound {
         List<Note> listNotes = noteRepository.findByIdStudent(idStudent);
+        Student student=studentService.getStudent(idStudent);
        Note note= listNotes.stream()
                 .filter(noteitem -> noteitem.getModule().getIdModule()==idModule)
                 .findFirst()
