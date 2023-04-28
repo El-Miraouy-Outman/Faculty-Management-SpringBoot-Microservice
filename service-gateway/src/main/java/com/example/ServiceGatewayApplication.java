@@ -8,8 +8,10 @@ import org.springframework.cloud.gateway.discovery.DiscoveryClientRouteDefinitio
 import org.springframework.cloud.gateway.discovery.DiscoveryLocatorProperties;
 import org.springframework.context.annotation.Bean;
 
+import java.net.http.HttpClient;
+
 @SpringBootApplication
-@EnableDiscoveryClient
+//@EnableDiscoveryClient
 public class ServiceGatewayApplication {
 
     public static void main(String[] args) {
@@ -21,4 +23,8 @@ public class ServiceGatewayApplication {
                                                         DiscoveryLocatorProperties dlp){
         return new DiscoveryClientRouteDefinitionLocator(rdc,dlp);
     }
+//    @Bean
+//    public HttpClient httpClient() {
+//        return HttpClient.create().resolver(DefaultAddressResolverGroup.INSTANCE);
+//    }
 }
