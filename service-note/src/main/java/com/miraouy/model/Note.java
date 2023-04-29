@@ -12,5 +12,9 @@ public class Note {
 
     private Long idNote;
     private Float note;
+    private Long idModule;
+    private Long idStudent;
+
+    private Long idFiliere;
 
 }

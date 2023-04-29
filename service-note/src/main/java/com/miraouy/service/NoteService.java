@@ -17,5 +17,4 @@ public interface NoteService {
     public List<NoteResponseDto> findNoteFiliereAndModule(Long idFiliere,Long idModule) throws FiliereNotFound, ModuleNotFound;
     public NoteResponseDto deleteNote(Long idStudent,Long idModule) throws NoteNotFound;
     public NoteResponseDto updaeNote(Long idStudent,Long idModule) throws NoteNotFound;
-    public
 }

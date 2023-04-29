@@ -1,5 +1,7 @@
 package com.miraouy.dto.Response;
 
+import com.miraouy.ClientFeign.Filiere;
+import com.miraouy.ClientFeign.ModuleF;
 import com.miraouy.ClientFeign.Student;
 import com.miraouy.model.Note;
 import lombok.AllArgsConstructor;
@@ -15,5 +17,4 @@ public class NoteResponseDto {
 
     private Float note;
     private  Student student;
-    private
 }

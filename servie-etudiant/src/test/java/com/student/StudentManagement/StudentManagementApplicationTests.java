@@ -1,13 +1,13 @@
-package com.miraouy.servieetudiant;
+package com.student.StudentManagement;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ServieEtudiantApplicationTests {
+class StudentManagementApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
+	@Test
+	void contextLoads() {
+	}
 
 }

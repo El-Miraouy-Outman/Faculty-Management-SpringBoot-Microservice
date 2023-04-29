@@ -9,6 +9,5 @@ import java.util.List;
 @Builder
 @Data
 public class Filiere {
-
     private String name;
 }

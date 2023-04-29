@@ -10,7 +10,6 @@ import java.util.List;
 @Builder
 @Data
 public class ModuleF {
-
     private  String name;
 
 }
