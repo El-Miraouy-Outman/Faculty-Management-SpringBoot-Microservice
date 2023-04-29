@@ -9,12 +9,13 @@ import com.miraouy.dto.Response.NoteResponseDto;
 import java.util.List;
 
 public interface NoteService {
-     NoteResponseDto addNote(NoteRequestDto note) ;
+    public NoteResponseDto addNote(NoteRequestDto note) ;
 
     NoteResponseDto findNoteByStudentAndModule(Long idStudent, Long idModule) throws NoteNotFound;
 
-     List<NoteResponseDto> findNotesEtudiant(Long idStudent);
-     List<NoteResponseDto> findNoteFiliereAndModule(Long idFiliere,Long idModule) throws FiliereNotFound, ModuleNotFound;
-     NoteResponseDto deleteNote(Long idStudent,Long idModule) throws NoteNotFound;
-     NoteResponseDto updaeNote(Long idStudent,Long idModule) throws NoteNotFound;
+    public List<NoteResponseDto> findNotesEtudiant(Long idStudent);
+    public List<NoteResponseDto> findNoteFiliereAndModule(Long idFiliere,Long idModule) throws FiliereNotFound, ModuleNotFound;
+    public NoteResponseDto deleteNote(Long idStudent,Long idModule) throws NoteNotFound;
+    public NoteResponseDto updaeNote(Long idStudent,Long idModule) throws NoteNotFound;
+    public
 }
