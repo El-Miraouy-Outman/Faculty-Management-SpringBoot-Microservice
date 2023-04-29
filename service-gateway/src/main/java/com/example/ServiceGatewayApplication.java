@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import java.net.http.HttpClient;
 
 @SpringBootApplication
-//@EnableDiscoveryClient
+//!l@EnableDiscoveryClient
 public class ServiceGatewayApplication {
 
     public static void main(String[] args) {

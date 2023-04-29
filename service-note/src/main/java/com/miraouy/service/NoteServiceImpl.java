@@ -1,13 +1,12 @@
 package com.miraouy.service;
 
-import com.miraouy.ClientFeign.Student;
 import com.miraouy.Exception.Filiere.FiliereNotFound;
 import com.miraouy.Exception.ModuleF.ModuleNotFound;
 import com.miraouy.Exception.Note.NoteNotFound;
 import com.miraouy.dto.Request.NoteRequestDto;
 import com.miraouy.dto.Response.NoteResponseDto;
-import com.miraouy.model.Filiere;
-import com.miraouy.model.ModuleF;
+import com.miraouy.ClientFeign.Filiere;
+import com.miraouy.ClientFeign.ModuleF;
 import com.miraouy.model.Note;
 import com.miraouy.repository.FiliereRepository;
 import com.miraouy.repository.ModuleRepository;
@@ -54,18 +53,9 @@ public class NoteServiceImpl implements NoteService{
     @Override
     public NoteResponseDto findNoteByStudentAndModule(Long idStudent, Long idModule) throws NoteNotFound {
         List<Note> listNotes = noteRepository.findByIdStudent(idStudent);
-        Student student=studentService.getStudent(idStudent);
-       Note note= listNotes.stream()
-                .filter(noteitem -> noteitem.getModule().getIdModule()==idModule)
-                .findFirst()
-               .orElse(null);
-       if(note==null)
-           throw new NoteNotFound("note not exist");
-        NoteResponseDto noteResponseDto = NoteResponseDto
-                .builder()
-                .note(note.getNote())
-                .idStudent(idStudent)
-                    .build();
+
+       NoteResponseDto noteResponseDto=NoteResponseDto.builder().build();
+       Note note=noteRepository.findByIdStudentAnd
         return noteResponseDto;
     }
 

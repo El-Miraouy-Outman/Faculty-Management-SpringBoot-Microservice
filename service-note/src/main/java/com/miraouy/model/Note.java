@@ -12,12 +12,5 @@ public class Note {
 
     private Long idNote;
     private Float note;
-    private Long idStudent;
-
-    @ManyToOne
-    private ModuleF module;
-
-    @ManyToOne
-    private Filiere filiere;
 
 }

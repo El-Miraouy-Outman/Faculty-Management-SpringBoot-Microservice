@@ -14,5 +14,6 @@ import lombok.NoArgsConstructor;
 public class NoteResponseDto {
 
     private Float note;
-    private Long idStudent;
+    private  Student student;
+    private
 }
