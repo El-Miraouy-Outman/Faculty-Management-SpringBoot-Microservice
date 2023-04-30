@@ -10,11 +10,9 @@ public class Note {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    private Long idNote;
+    private Long id;
     private Float note;
-    private Long idModule;
     private Long idStudent;
-
-    private Long idFiliere;
+    private Long idModule;
 
 }

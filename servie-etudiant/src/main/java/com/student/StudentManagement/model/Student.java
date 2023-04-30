@@ -42,9 +42,8 @@ public class Student {
     private Diplomat diplomat ;
    // new
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "filiere_id", nullable = true)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Filiere filier;
 
 //    @ManyToMany

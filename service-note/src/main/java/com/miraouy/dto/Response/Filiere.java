@@ -1,4 +1,4 @@
-package com.miraouy.ClientFeign;
+package com.miraouy.dto.Response;
 
 import lombok.*;
 
@@ -9,5 +9,6 @@ import java.util.List;
 @Builder
 @Data
 public class Filiere {
+    private Long id;
     private String name;
 }

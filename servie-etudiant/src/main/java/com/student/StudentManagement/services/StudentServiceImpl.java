@@ -64,7 +64,7 @@ public class StudentServiceImpl implements StudentService {
         } else {
             throw new RuntimeException("Student not found for apogee :: " + apogee);
         }
-
+        student.setFilier(opt.get().getFilier());
         return student;
     }
 

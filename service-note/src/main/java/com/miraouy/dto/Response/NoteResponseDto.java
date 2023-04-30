@@ -1,9 +1,5 @@
 package com.miraouy.dto.Response;
 
-import com.miraouy.ClientFeign.Filiere;
-import com.miraouy.ClientFeign.ModuleF;
-import com.miraouy.ClientFeign.Student;
-import com.miraouy.model.Note;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
