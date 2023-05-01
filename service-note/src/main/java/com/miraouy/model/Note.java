@@ -12,7 +12,7 @@ public class Note {
 
     private Long id;
     private Float note;
-    private Long idStudent;
+    private String apogee;
     private Long idModule;
 
 }

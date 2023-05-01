@@ -29,20 +29,20 @@ public class FiliereController {
         return adResp;
     }
 
-    @GetMapping("/viewFilieres")
+    @GetMapping
     public List<Filiere> viewFilieres() {
         return filiereService.getAllFilieres();
 
     }
 
-    @GetMapping("/viewFiliere/{id}")
+    @GetMapping("/{id}")
     public Filiere viewFiliere(@PathVariable(value = "id") Long id) {
         return filiereService.getFiliereById(id);
 
     }
 
 
-    @GetMapping("/deleteFiliere/{id}")
+    @DeleteMapping("/{id}")
     public void deleteFiliere(@PathVariable(value = "id") Long id) {
         filiereService.deleteFiliere(id);
     }

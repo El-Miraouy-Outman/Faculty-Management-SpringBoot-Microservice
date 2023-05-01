@@ -44,7 +44,7 @@ public class Student {
 
     @ManyToOne()
     @JoinColumn(name = "filiere_id", nullable = true)
-    private Filiere filier;
+    private Filiere filiere;
 
 //    @ManyToMany
 //    private List<Carriere> carrieres;
