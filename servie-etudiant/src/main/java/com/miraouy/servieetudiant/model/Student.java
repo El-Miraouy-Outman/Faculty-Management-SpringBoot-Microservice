@@ -1,8 +1,8 @@
-package com.student.StudentManagement.model;
+package com.miraouy.servieetudiant.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.student.StudentManagement.enumurations.Diplomat;
-import com.student.StudentManagement.enumurations.Gender;
+import com.miraouy.servieetudiant.enumurations.Diplomat;
+import com.miraouy.servieetudiant.enumurations.Gender;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,16 +22,16 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id ;
-    @Column(unique=true)
+    //@Column(unique=true)
 
     private String cin ;
-    @Column(unique=true)
-    private Long apogee;
+   // @Column(unique=true)
+    private String apogee;
     private String nom ;
     private String prenom ;
-    @Column(unique=true)
+    //@Column(unique=true)
     private String cne ;
-    @Column(unique=true)
+    //@Column(unique=true)
     private String email ;
     private String phone;
     private Date dateNaissance ;
@@ -40,12 +40,8 @@ public class Student {
     private Gender genre ;
     @Enumerated(EnumType.STRING)
     private Diplomat diplomat ;
-   // new
-
-    @ManyToOne()
-    @JoinColumn(name = "filiere_id", nullable = true)
+    @OneToOne
     private Filiere filiere;
-
 //    @ManyToMany
 //    private List<Carriere> carrieres;
 }

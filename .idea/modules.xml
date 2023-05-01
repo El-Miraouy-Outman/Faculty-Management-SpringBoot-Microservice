@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/config-service/config-service.iml" filepath="$PROJECT_DIR$/config-service/config-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/gestion-faculte.iml" filepath="$PROJECT_DIR$/gestion-faculte.iml" />
-      <module fileurl="file://$PROJECT_DIR$/service-gateway/service-gateway.iml" filepath="$PROJECT_DIR$/service-gateway/service-gateway.iml" />
-      <module fileurl="file://$PROJECT_DIR$/service-note/service-note.iml" filepath="$PROJECT_DIR$/service-note/service-note.iml" />
-      <module fileurl="file://$PROJECT_DIR$/servie-etudiant/servie-etudiant.iml" filepath="$PROJECT_DIR$/servie-etudiant/servie-etudiant.iml" />
     </modules>
   </component>
 </project>

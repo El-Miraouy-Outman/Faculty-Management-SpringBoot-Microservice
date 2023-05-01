@@ -35,20 +35,20 @@ public class StudentController {
     public void SaveStudent(@RequestBody StudentPojo data){
         studentService.saveStudent(data);
     }
-    @GetMapping("/viewStudents")
+    @GetMapping
     public List<Student> viewStudents() {
         return studentService.getAllStudents();
 
     }
 
-    @GetMapping("/viewStudent/{apogee}")
+    @GetMapping("/{apogee}")
     public Student viewStudent(@PathVariable(value = "apogee") Long apogee) {
         return studentService.getStudentByApogee(apogee);
 
     }
 
 
-    @GetMapping("/deleteStudent/{apogee}")
+    @DeleteMapping("/{apogee}")
     public void deleteStudent(@PathVariable(value = "apogee") Long apogee) {
         studentService.deleteStudent(apogee);
     }

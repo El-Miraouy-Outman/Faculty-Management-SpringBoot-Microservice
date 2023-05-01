@@ -54,13 +54,24 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public NoteResponseDto findNoteByStudentAndModule(Long idStudent, Long idModule) throws NoteNotFound {
-        Optional<Note> note = noteRepository.findByidStudentAndIdModule(idStudent,idModule);
-        Student student = studentClient.getStudent(idStudent);
+    public Note findNote(String apogee, Long IDMODULE) {
+
+      Note note=  noteRepository.findByApogeeAndIdModule(apogee, IDMODULE).get();
+       System.out.println(note);
+       return note;
+    }
+
+    @Override
+    public NoteResponseDto findNoteByStudentAndModule(String apogee, Long idModule) throws NoteNotFound {
+        Optional<Note> note = noteRepository.findByApogeeAndIdModule(apogee,idModule);
+        System.out.println(note);
+        Student student = studentClient.getStudent(apogee);
+        System.out.println(student.toString());
         ModuleF moduleF = moduleClient.viewModule(idModule);
-        Filiere filiere = filiereClient.viewFiliere(student.getFilier().getId());
+        System.out.println(moduleF.toString());
+        Filiere filiere = filiereClient.viewFiliere(student.getFiliere().getId());
         student.setModuleF(moduleF);
-        student.setFilier(filiere);
+        student.setFiliere(filiere);
        NoteResponseDto noteResponseDto=NoteResponseDto
                .builder()
                .note(note.get().getNote())

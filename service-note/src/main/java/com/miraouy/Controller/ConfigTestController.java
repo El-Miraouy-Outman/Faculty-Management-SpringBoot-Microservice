@@ -7,17 +7,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-//@RestController
+@RestController
 //@RefreshScope
 public class ConfigTestController {
-   // @Value("${note.params.x}")
-  //  private String x;
-  //  @Value("${note.params.y}")
-   // private String y;
-   // @Value("${hind.out.hello}")
-   // private String hind;
-    //@GetMapping("/params")
-   // public Map<String,String> TesteParams(){
-       // return Map.of("x",x,"y",y,"name of oumzguir",hind);
-   // }
+   /* @Value("${note.params.x}")
+    private String x;
+    @Value("${note.params.y}")
+    private String y;
+    @Value("${hind.out.hello}")
+    private String hind;
+    @GetMapping("/params")*/
+    //public Map<String,String> TesteParams(){
+      //  return Map.of("x",x,"y",y,"name of oumzguir",hind);
+  //  }
 }

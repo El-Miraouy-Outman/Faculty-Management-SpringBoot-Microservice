@@ -31,7 +31,7 @@ public class StudentServiceImpl implements StudentService {
 
         BeanUtils.copyProperties(dataPojo, student);
 
-        student.setFilier(filiere);
+        student.setFiliere(filiere);
 
         filierRepository.save(filiere);
 
@@ -64,7 +64,7 @@ public class StudentServiceImpl implements StudentService {
         } else {
             throw new RuntimeException("Student not found for apogee :: " + apogee);
         }
-        student.setFilier(opt.get().getFilier());
+        student.setFiliere(opt.get().getFiliere());
         return student;
     }
 
