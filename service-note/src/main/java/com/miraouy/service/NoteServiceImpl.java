@@ -1,5 +1,6 @@
 package com.miraouy.service;
 
+import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.miraouy.ClientFeign.FiliereClient;
 import com.miraouy.ClientFeign.ModuleClient;
 import com.miraouy.ClientFeign.StudentClient;
@@ -13,6 +14,7 @@ import com.miraouy.dto.Response.NoteResponseDto;
 import com.miraouy.dto.Response.Student;
 import com.miraouy.model.Note;
 import com.miraouy.repository.NoteRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,32 +37,52 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public NoteResponseDto addNote(NoteRequestDto noteRequestDto) {
+        Note findNote=noteRepository.findByApogeeAndIdModule(noteRequestDto.getApogee(),noteRequestDto.getIdModule()).orElse(null);
+        if(findNote!=null) {
+            System.out.println("note exist deja");
+            return null;
+        }
         ModuleF module=moduleClient.viewModule(noteRequestDto.getIdModule());
         System.out.println(module);
         System.out.println("helloooo****");
+        Student student=studentClient.getStudent(noteRequestDto.getApogee());
+        System.out.println(student);
         Note note=Note.builder()
                 .note(noteRequestDto.getNote())
-                //.module(module)
-               // .idStudent(noteRequestDto.getIdStudent())
+                .apogee(noteRequestDto.getApogee())
+                .idModule(noteRequestDto.getIdModule())
                 .build();
+        System.out.println(note);
         Note noteSave=noteRepository.save(note);
         System.out.println("hello 2");
         // traitement pour chercher l'etudiant apres la construction de l'autre microservice
-
-        return NoteResponseDto.builder()
-                .note(noteSave.getNote())
-                // .student()
+        NoteResponseDto noteResponseDto=NoteResponseDto
+                .builder()
+                .note(note.getNote())
+                .student(student)
                 .build();
+        return noteResponseDto;
     }
 
     @Override
-    public NoteResponseDto findNoteByStudentAndModule(Long idStudent, Long idModule) throws NoteNotFound {
-        Optional<Note> note = noteRepository.findByidStudentAndIdModule(idStudent,idModule);
-        Student student = studentClient.getStudent(idStudent);
+    public Note findNote(Long apogee, Long IDMODULE) {
+
+      Note note=  noteRepository.findByApogeeAndIdModule(apogee, IDMODULE).get();
+       System.out.println(note);
+       return note;
+    }
+
+    @Override
+    public NoteResponseDto findNoteByStudentAndModule(Long apogee, Long idModule) throws NoteNotFound {
+        Optional<Note> note = noteRepository.findByApogeeAndIdModule(apogee,idModule);
+        System.out.println(note);
+        Student student = studentClient.getStudent(apogee);
+        System.out.println(student.toString());
         ModuleF moduleF = moduleClient.viewModule(idModule);
-        Filiere filiere = filiereClient.viewFiliere(student.getFilier().getId());
+        System.out.println(moduleF.toString());
+        Filiere filiere = filiereClient.viewFiliere(student.getFiliere().getId());
         student.setModuleF(moduleF);
-        student.setFilier(filiere);
+        student.setFiliere(filiere);
        NoteResponseDto noteResponseDto=NoteResponseDto
                .builder()
                .note(note.get().getNote())
@@ -89,12 +111,12 @@ public class NoteServiceImpl implements NoteService{
 
 
     @Override
-    public NoteResponseDto deleteNote(Long idStudent,Long idModule) throws NoteNotFound {
+    public NoteResponseDto deleteNote(Long apogee,Long idModule) throws NoteNotFound {
         return null;
     }
 
     @Override
-    public NoteResponseDto updaeNote(Long id,Long idModule) throws NoteNotFound {
+    public NoteResponseDto updaeNote(Long apogee,Long idModule) throws NoteNotFound {
         return null;
     }
 }

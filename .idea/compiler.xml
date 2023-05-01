@@ -14,11 +14,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="config-service" target="17" />
       <module name="gestion-etudiant" target="17" />
-      <module name="service-gateway" target="17" />
-      <module name="service-note" target="17" />
-      <module name="servie-etudiant" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

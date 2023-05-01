@@ -4,12 +4,12 @@ import lombok.Data;
 
 @Data
 public class Student {
-    private String apogee;
+    private Long apogee;
     private  String nom;
     private String prenom;
     private String cne;
     private ModuleF moduleF;
-    private Filiere filier;
+    private Filiere filiere;
 
 
 }

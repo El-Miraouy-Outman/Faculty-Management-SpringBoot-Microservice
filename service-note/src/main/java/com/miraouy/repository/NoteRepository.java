@@ -9,6 +9,6 @@ import java.util.Optional;
 @Repository
 public interface NoteRepository extends JpaRepository<Note,Long> {
 
-    Optional<Note> findByidStudentAndIdModule(Long idStudent, Long idModule);
+    Optional<Note> findByApogeeAndIdModule(Long apoogee, Long idModule);
 }
 

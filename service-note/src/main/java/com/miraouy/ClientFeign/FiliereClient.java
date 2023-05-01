@@ -10,6 +10,6 @@ import java.util.List;
 
 @FeignClient(name = "service-filiere",path =  "/api/filieres", url = "http://localhost:8200")
 public interface FiliereClient {
-    @GetMapping("/viewFiliere/{id}")
+    @GetMapping("/{id}")
     public Filiere viewFiliere(@PathVariable Long id);
 }
