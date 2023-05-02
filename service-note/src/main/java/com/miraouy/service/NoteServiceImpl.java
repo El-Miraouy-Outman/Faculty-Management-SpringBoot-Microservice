@@ -3,6 +3,7 @@ package com.miraouy.service;
 import com.miraouy.ClientFeign.FiliereClient;
 import com.miraouy.ClientFeign.ModuleClient;
 import com.miraouy.ClientFeign.StudentClient;
+import com.miraouy.Exception.Note.NoteAlreadyExist;
 import com.miraouy.Exception.Note.NoteNotFound;
 import com.miraouy.dto.Request.NoteRequestDto;
 import com.miraouy.dto.Response.Filiere;
@@ -34,11 +35,10 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public NoteResponseDto addNote(NoteRequestDto noteRequestDto) {
+    public NoteResponseDto addNote(NoteRequestDto noteRequestDto) throws NoteAlreadyExist {
         Note findNote=noteRepository.findByApogeeAndIdModule(noteRequestDto.getApogee(),noteRequestDto.getIdModule()).orElse(null);
         if(findNote!=null) {
-            System.out.println("note exist deja");
-            return null;
+            throw  new NoteAlreadyExist("la note deja existe");
         }
         ModuleF module=moduleClient.viewModule(noteRequestDto.getIdModule());
         System.out.println(module);
@@ -78,14 +78,15 @@ public class NoteServiceImpl implements NoteService{
         System.out.println(student.toString());
         ModuleF moduleF = moduleClient.viewModule(idModule);
         System.out.println(moduleF.toString());
-        Filiere filiere = filiereClient.viewFiliere(1L); //need student.getFiliere().getId()
+        Filiere filiere = filiereClient.viewFiliere(student.getFilier().getId());
         student.setModuleF(moduleF);
-        student.setFiliere(filiere);
+        student.setFilier(filiere);
        NoteResponseDto noteResponseDto=NoteResponseDto
                .builder()
                .note(note.get().getNote())
                .idModule(idModule)
                .student(student)
+               .idFiliere(filiere.getId())
                .build();
         return noteResponseDto;
     }

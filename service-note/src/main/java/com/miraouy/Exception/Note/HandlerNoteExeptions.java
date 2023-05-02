@@ -21,4 +21,13 @@ public class HandlerNoteExeptions {
         errorB.setMessage(ex.getMessage());
         return new ResponseEntity<>(errorB, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler
+    public ResponseEntity<Object> handleNoteAlreadyExist(NoteAlreadyExist ex, WebRequest request) {
+        MessageError errorB = new MessageError();
+        errorB.setTimestamp(new Date());
+        errorB.setStatus(HttpStatus.BAD_REQUEST.value());
+        errorB.setError(HttpStatus.BAD_REQUEST.name());
+        errorB.setMessage(ex.getMessage());
+        return new ResponseEntity<>(errorB, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
 }

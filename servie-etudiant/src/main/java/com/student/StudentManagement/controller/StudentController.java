@@ -23,7 +23,7 @@ public class StudentController {
 
     }
 
-    @GetMapping("/viewStudents")
+    @GetMapping("")
     public List<RespenseStudentDto> viewStudents() {
         System.out.println("controller");
         return studentService.getAllStudents();
@@ -31,14 +31,14 @@ public class StudentController {
     }
 
 
-    @GetMapping("/viewStudent/{apogee}")
+    @GetMapping("/{apogee}")
     public RequestStudentDto viewStudent(@PathVariable(value = "apogee") Long apogee) {
         return studentService.getStudentByApogee(apogee);
 
     }
 
 
-    @GetMapping("/deleteStudent/{apogee}")
+    @DeleteMapping("/{apogee}")
     public void deleteStudent(@PathVariable(value = "apogee") Long apogee) {
         studentService.deleteStudent(apogee);
     }

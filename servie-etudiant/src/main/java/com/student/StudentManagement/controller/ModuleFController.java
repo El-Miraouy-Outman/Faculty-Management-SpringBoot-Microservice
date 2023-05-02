@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/moduleFs")
+@RequestMapping("/api/modules")
 @RequiredArgsConstructor
 public class ModuleFController {
     private final ModuleFService moduleFService;
@@ -22,20 +22,20 @@ public class ModuleFController {
         moduleFService.saveModule(dataPojo);
     }
 
-    @GetMapping("/viewModules")
+    @GetMapping()
     public List<RespenseModuleFDto> viewModules() {
         return moduleFService.getAllModuleFs();
 
     }
 
-    @GetMapping("/viewModule/{id}")
+    @GetMapping("/{id}")
     public RespenseModuleFDto viewModule(@PathVariable(value = "id") Long id) {
         return moduleFService.getModuleFById(id);
 
     }
 
 
-    @GetMapping("/deleteModule/{id}")
+    @DeleteMapping("/{id}")
     public void deleteModule(@PathVariable(value = "id") Long id) {
         moduleFService.deleteModuleF(id);
     }

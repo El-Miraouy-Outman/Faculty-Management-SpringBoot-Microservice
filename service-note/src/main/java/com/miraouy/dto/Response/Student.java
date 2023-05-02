@@ -9,7 +9,7 @@ public class Student {
     private String prenom;
     private String cne;
     private ModuleF moduleF;
-    private Filiere filiere;
+    private Filiere filier;
 
 
 }
