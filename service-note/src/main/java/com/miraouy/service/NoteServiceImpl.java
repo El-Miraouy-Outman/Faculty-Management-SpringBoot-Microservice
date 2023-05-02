@@ -35,21 +35,31 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public NoteResponseDto addNote(NoteRequestDto noteRequestDto) {
+        Note findNote=noteRepository.findByApogeeAndIdModule(noteRequestDto.getApogee(),noteRequestDto.getIdModule()).orElse(null);
+        if(findNote!=null) {
+            System.out.println("note exist deja");
+            return null;
+        }
         ModuleF module=moduleClient.viewModule(noteRequestDto.getIdModule());
         System.out.println(module);
+        System.out.println("helloooo****");
+        Student student=studentClient.getStudent(noteRequestDto.getApogee());
+        System.out.println(student);
         Note note=Note.builder()
-               .note(noteRequestDto.getNote())
+                .note(noteRequestDto.getNote())
                 .apogee(noteRequestDto.getApogee())
-                .idModule(module.getId())
-                .idFiliere(noteRequestDto.getIdFiliere())
-               .build();
-        Student student = studentClient.getStudent(noteRequestDto.getApogee());
+                .idModule(noteRequestDto.getIdModule())
+                .build();
+        System.out.println(note);
         Note noteSave=noteRepository.save(note);
-       return NoteResponseDto.builder()
-                .note(noteSave.getNote())
-               .student(student)
-               .idModule(module.getId())
-               .build();
+        System.out.println("hello 2");
+        // traitement pour chercher l'etudiant apres la construction de l'autre microservice
+        NoteResponseDto noteResponseDto=NoteResponseDto
+                .builder()
+                .note(note.getNote())
+                .student(student)
+                .build();
+        return noteResponseDto;
     }
 
     @Override
