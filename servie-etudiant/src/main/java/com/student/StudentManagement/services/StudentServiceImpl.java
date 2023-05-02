@@ -1,8 +1,9 @@
 package com.student.StudentManagement.services;
 
 import com.student.StudentManagement.dto.RequestStudentDto;
+import com.student.StudentManagement.dto.RespenseStudentDto;
+import com.student.StudentManagement.model.Carriere;
 import com.student.StudentManagement.model.Filiere;
-import com.student.StudentManagement.model.ModuleF;
 import com.student.StudentManagement.model.Student;
 import com.student.StudentManagement.model.StudentPojo;
 import com.student.StudentManagement.repository.FilierRepository;
@@ -11,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +24,8 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
     private final FilierRepository filierRepository;
+    private final CarriereService carriereService;
+
 
     @Override
     public void saveStudent(StudentPojo dataPojo) {
@@ -31,7 +36,7 @@ public class StudentServiceImpl implements StudentService {
 
         BeanUtils.copyProperties(dataPojo, student);
 
-        student.setFiliere(filiere);
+        student.setFilier(filiere);
 
         filierRepository.save(filiere);
 
@@ -41,31 +46,39 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public RequestStudentDto createStudent(RequestStudentDto student) {
+    public List<RespenseStudentDto> getAllStudents() {
+        List<Student> students = studentRepository.findAll();
+        List<RespenseStudentDto> respenseStudentDtoList = new ArrayList<>();
+
+        for (Student i : students) {
+            RespenseStudentDto respense = RespenseStudentDto.builder().cin(i.getCin())
+                    .nom(i.getNom())
+                    .prenom(i.getPrenom())
+                    .cne(i.getCne())
+                    .apogee(i.getApogee())
+                    .email(i.getEmail())
+                    .genre(i.getGenre())
+                    .carriere(i.getCarrieres())
+                    .filiere(i.getFilier())
+                    .build();
+            respenseStudentDtoList.add(respense);
+        }
+        return respenseStudentDtoList;
+    }
+
+    @Override
+    public RequestStudentDto getStudentByApogee(Long apogee) {
         RequestStudentDto dto = RequestStudentDto.builder().build();
-        Student student1 = new Student();
-        BeanUtils.copyProperties(student, student1);
-        Student storedStudent = studentRepository.save(student1);
-        BeanUtils.copyProperties(storedStudent, dto);
-        return dto;
-    }
-
-    @Override
-    public List<Student> getAllStudents() {
-        return studentRepository.findAll();
-    }
-
-    @Override
-    public Student getStudentByApogee(Long apogee) {
-        Optional<Student> opt = Optional.ofNullable(studentRepository.getStudentByApogee(apogee));
+        Student std = studentRepository.getStudentByApogee(apogee);
+        Optional<Student> opt = studentRepository.findById(std.getId());
         Student student;
         if (opt.isPresent()) {
             student = opt.get();
         } else {
             throw new RuntimeException("Student not found for apogee :: " + apogee);
         }
-        student.setFiliere(opt.get().getFiliere());
-        return student;
+        BeanUtils.copyProperties(student, dto);
+        return dto;
     }
 
     @Override
@@ -78,5 +91,12 @@ public class StudentServiceImpl implements StudentService {
 
         Long id = studentRepository.getStudentByApogee(apogee).getId();
         studentRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Carriere> getCarrieresByStudentId(Long StudentId) {
+        Student student = studentRepository.findById(StudentId)
+                .orElseThrow(() -> new EntityNotFoundException("Student not found"));
+        return student.getCarrieres();
     }
 }

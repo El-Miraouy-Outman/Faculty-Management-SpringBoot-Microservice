@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "service-etudiant",path =  "/api/students", url = "http://localhost:8200")
 public interface StudentClient {
-     @GetMapping("/{apogee}")
-    public Student getStudent(@PathVariable String apogee);
+     @GetMapping("/viewStudent/{apogee}")
+    public Student getStudent(@PathVariable Long apogee);
 }

@@ -11,12 +11,11 @@ import java.util.List;
 
 public interface NoteService {
     public NoteResponseDto addNote(NoteRequestDto note) ;
-    public Note findNote(String apogee,Long IDMODULE);
-    NoteResponseDto findNoteByStudentAndModule(String apogee, Long idModule) throws NoteNotFound;
-
-    public List<NoteResponseDto> findNotesEtudiant(Long idStudent);
+    public Note findNote(Long apogee,Long idModule);
+    NoteResponseDto findNoteByStudentAndModule(Long apogee, Long idModule) throws NoteNotFound;
+    public List<NoteResponseDto> findNotesEtudiant(Long apogee) throws NoteNotFound;
     public List<NoteResponseDto> findNoteFiliereAndModule(Long idFiliere,Long idModule) throws FiliereNotFound, ModuleNotFound;
-    public NoteResponseDto deleteNote(Long idStudent,Long idModule) throws NoteNotFound;
-    public NoteResponseDto updaeNote(Long idStudent,Long idModule) throws NoteNotFound;
+    public String deleteNote(Long apogee,Long idModule) throws NoteNotFound;
+    public NoteResponseDto updateNote(Long apogee,Long idModule,NoteRequestDto note) throws NoteNotFound;
 
 }

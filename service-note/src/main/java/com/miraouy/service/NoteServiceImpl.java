@@ -3,8 +3,6 @@ package com.miraouy.service;
 import com.miraouy.ClientFeign.FiliereClient;
 import com.miraouy.ClientFeign.ModuleClient;
 import com.miraouy.ClientFeign.StudentClient;
-import com.miraouy.Exception.Filiere.FiliereNotFound;
-import com.miraouy.Exception.ModuleF.ModuleNotFound;
 import com.miraouy.Exception.Note.NoteNotFound;
 import com.miraouy.dto.Request.NoteRequestDto;
 import com.miraouy.dto.Response.Filiere;
@@ -13,10 +11,12 @@ import com.miraouy.dto.Response.NoteResponseDto;
 import com.miraouy.dto.Response.Student;
 import com.miraouy.model.Note;
 import com.miraouy.repository.NoteRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class NoteServiceImpl implements NoteService{
@@ -37,75 +37,92 @@ public class NoteServiceImpl implements NoteService{
     public NoteResponseDto addNote(NoteRequestDto noteRequestDto) {
         ModuleF module=moduleClient.viewModule(noteRequestDto.getIdModule());
         System.out.println(module);
-        System.out.println("helloooo****");
         Note note=Note.builder()
-                .note(noteRequestDto.getNote())
-                //.module(module)
-               // .idStudent(noteRequestDto.getIdStudent())
-                .build();
+               .note(noteRequestDto.getNote())
+                .apogee(noteRequestDto.getApogee())
+                .idModule(module.getId())
+                .idFiliere(noteRequestDto.getIdFiliere())
+               .build();
+        Student student = studentClient.getStudent(noteRequestDto.getApogee());
         Note noteSave=noteRepository.save(note);
-        System.out.println("hello 2");
-        // traitement pour chercher l'etudiant apres la construction de l'autre microservice
-
-        return NoteResponseDto.builder()
+       return NoteResponseDto.builder()
                 .note(noteSave.getNote())
-                // .student()
-                .build();
+               .student(student)
+               .idModule(module.getId())
+               .build();
     }
 
     @Override
-    public Note findNote(String apogee, Long IDMODULE) {
-
-      Note note=  noteRepository.findByApogeeAndIdModule(apogee, IDMODULE).get();
+    public Note findNote(Long apogee, Long idModule) {
+      Note note=  noteRepository.findByApogeeAndIdModule(apogee, idModule).get();
        System.out.println(note);
        return note;
     }
 
     @Override
-    public NoteResponseDto findNoteByStudentAndModule(String apogee, Long idModule) throws NoteNotFound {
-        Optional<Note> note = noteRepository.findByApogeeAndIdModule(apogee,idModule);
+    public NoteResponseDto findNoteByStudentAndModule(Long apogee, Long idModule) throws NoteNotFound {
+        Optional<Note> note = Optional.ofNullable(noteRepository.findByApogeeAndIdModule(apogee, idModule)
+                .orElseThrow(() -> new NoteNotFound("Note not found")));
         System.out.println(note);
-        Student student = studentClient.getStudent(apogee);
+        Student student =studentClient.getStudent(apogee);
         System.out.println(student.toString());
         ModuleF moduleF = moduleClient.viewModule(idModule);
         System.out.println(moduleF.toString());
-        Filiere filiere = filiereClient.viewFiliere(student.getFiliere().getId());
+        Filiere filiere = filiereClient.viewFiliere(1L); //need student.getFiliere().getId()
         student.setModuleF(moduleF);
         student.setFiliere(filiere);
        NoteResponseDto noteResponseDto=NoteResponseDto
                .builder()
                .note(note.get().getNote())
+               .idModule(idModule)
                .student(student)
                .build();
         return noteResponseDto;
     }
 
     @Override
-    public List<NoteResponseDto> findNotesEtudiant(Long idStudent) {
-        //get the student info
-        //get the filiere of the student
-        //get modules Ids
-        //for each module find note by idStudentAndidModules
-        //store notes in a List of NoteResponse and return it
-        return null;
+    public List<NoteResponseDto> findNotesEtudiant(Long apogee) throws NoteNotFound {
+        List<Note> notes = noteRepository.findAllByApogee(apogee);
+        if (notes.isEmpty()) {
+            throw new NoteNotFound("No notes found for apogee: " + apogee);
+        }
+        Student student= studentClient.getStudent(apogee);
+        return notes.stream().map(note -> new NoteResponseDto(note.getNote(),student,note.getIdModule(),note.getIdFiliere()))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<NoteResponseDto> findNoteFiliereAndModule(Long idFiliere, Long idModule) throws FiliereNotFound, ModuleNotFound {
-       // Filiere filiere = filiereRepository.findById(idFiliere).orElseThrow(() -> new FiliereNotFound("Filiere not found"));
-      //  ModuleF module = moduleRepository.findById(idModule).orElseThrow(() -> new ModuleNotFound("Module not found"));
-      //  List<Note> notes = noteRepository.findByModuleAndFiliere(module, filiere);
-        return null;//notes.stream().map(note -> new NoteResponseDto(note.getNote(), note.getIdStudent())).collect(Collectors.toList());
+    public List<NoteResponseDto> findNoteFiliereAndModule(Long idFiliere, Long idModule) {
+        List<Note> notes = noteRepository.findAllByIdFiliere(idFiliere);
+        return notes.stream()
+                .filter(note -> note.getIdModule().equals(idModule))
+                .map(note -> {
+                    Student student= studentClient.getStudent(note.getApogee());     //to mush call for database
+                    return new NoteResponseDto(note.getNote(), student, note.getIdModule(), note.getIdFiliere());
+                })
+                .collect(Collectors.toList());
     }
 
 
     @Override
-    public NoteResponseDto deleteNote(Long idStudent,Long idModule) throws NoteNotFound {
-        return null;
+    public String deleteNote(Long apogee, Long idModule) throws NoteNotFound {
+        Note noteToDelete = noteRepository.findByApogeeAndIdModule(apogee, idModule)
+                .orElseThrow(() -> new NoteNotFound("Note not found"));
+        noteRepository.delete(noteToDelete);
+        return "Note Has delete Succesfuly";
     }
 
     @Override
-    public NoteResponseDto updaeNote(Long id,Long idModule) throws NoteNotFound {
-        return null;
+    public NoteResponseDto updateNote(Long apogee,Long idModule,NoteRequestDto noteRequest) throws NoteNotFound {
+        Student student= studentClient.getStudent(apogee);
+        Note noteToUpdate = noteRepository.findByApogeeAndIdModule(apogee, idModule)
+                .orElseThrow(() -> new NoteNotFound("Note not found"));
+        BeanUtils.copyProperties(noteRequest,noteToUpdate);
+        noteRepository.save(noteToUpdate);
+        return NoteResponseDto.builder()
+                .student(student)
+                .note(noteToUpdate.getNote())
+                .idModule(idModule)
+                .build();
     }
 }

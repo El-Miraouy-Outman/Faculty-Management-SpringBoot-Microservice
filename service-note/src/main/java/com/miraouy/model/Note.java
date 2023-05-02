@@ -12,7 +12,8 @@ public class Note {
 
     private Long id;
     private Float note;
-    private String apogee;
+    private Long apogee;
     private Long idModule;
+    private Long idFiliere;
 
 }

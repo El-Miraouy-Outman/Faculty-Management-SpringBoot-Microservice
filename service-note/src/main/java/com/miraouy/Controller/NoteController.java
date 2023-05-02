@@ -23,22 +23,27 @@ public class NoteController  {
         this.noteService = noteService;
     }
 
+
     @PostMapping
     public NoteResponseDto addNote(@RequestBody NoteRequestDto note) {
         System.out.println("bonsoir bonjor");
         return noteService.addNote(note);
     }
+
+
     //listes des notes d'un etudiant de toutes les modules
     @GetMapping("/students/{apogee}")
-    public List<NoteResponseDto> findNotesEtudiant(@PathVariable Long idStudent) {
-       return noteService.findNotesEtudiant(idStudent);
+    public List<NoteResponseDto> findNotesEtudiant(@PathVariable Long apogee) throws NoteNotFound {
+       return noteService.findNotesEtudiant(apogee);
     }
+
 
     //note d'un etudiant pour un modules specifique
     @GetMapping("/students/{apogee}/modules/{idModule}")
-    public NoteResponseDto findNoteStudentModule(@PathVariable String apogee,@PathVariable Long idModule) throws NoteNotFound {
+    public NoteResponseDto findNoteStudentModule(@PathVariable Long apogee,@PathVariable Long idModule) throws NoteNotFound {
         return noteService.findNoteByStudentAndModule(apogee,idModule);
     }
+
 
     //listes des notes d'une module pour une filiere
     @GetMapping("/filieres/{idFiliere}/modules/{idModule}")
@@ -48,16 +53,17 @@ public class NoteController  {
 
 
     @DeleteMapping("/students/{apogee}/modules/{idModule}")
-    public NoteResponseDto deleteNote(Long idStudent, Long idModule) throws NoteNotFound {
-        return null;
+    public String deleteNote(@PathVariable Long apogee,@PathVariable Long idModule) throws NoteNotFound {
+        return noteService.deleteNote(apogee,idModule);
     }
 
     @PutMapping("/students/{apogee}/modules/{idModule}")
-    public NoteResponseDto updaeNote(Long apogee, Long idModule) throws NoteNotFound {
-        return null;
+    public NoteResponseDto updateNote(@PathVariable Long apogee,@PathVariable Long idModule,@RequestBody NoteRequestDto requestDto) throws NoteNotFound {
+      return   noteService.updateNote(apogee,idModule,requestDto);
+
     }
-    @GetMapping("/test/{apogee}/{idmodule}")
-    public Note getNoteSimple(@PathVariable String apogee,@PathVariable Long idmodule){
-       return  noteService.findNote(apogee, idmodule);
+    @GetMapping("/test/{apogee}/{idModule}")
+    public Note getNoteSimple(@PathVariable Long apogee,@PathVariable Long idModule){
+       return  noteService.findNote(apogee, idModule);
     }
 }

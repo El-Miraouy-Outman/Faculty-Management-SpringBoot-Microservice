@@ -1,12 +1,14 @@
 package com.student.StudentManagement.services;
 
 import com.student.StudentManagement.dto.RequestFiliereDto;
+import com.student.StudentManagement.dto.RespenseFiliereDto;
 import com.student.StudentManagement.model.Filiere;
 import com.student.StudentManagement.repository.FilierRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,12 +28,22 @@ public class FiliereServiceImpl implements FiliereService {
     }
 
     @Override
-    public List<Filiere> getAllFilieres() {
-        return filierRepository.findAll();
+    public List<RespenseFiliereDto> getAllFilieres() {
+        List<Filiere> filieres = filierRepository.findAll();
+        List<RespenseFiliereDto> respenseFiliereDtos = new ArrayList<>();
+        for (Filiere i : filieres) {
+            RespenseFiliereDto response = RespenseFiliereDto.builder().name(i.getName())
+                    .modules(i.getModules())
+                    .build();
+            respenseFiliereDtos.add(response);
+        }
+        return respenseFiliereDtos;
     }
 
     @Override
-    public Filiere getFiliereById(Long id) {
+    public RespenseFiliereDto getFiliereById(Long id) {
+        RespenseFiliereDto dto = RespenseFiliereDto.builder().build();
+
         Optional<Filiere> opt = filierRepository.findById(id);
         Filiere filiere ;
         if (opt.isPresent()) {
@@ -40,14 +52,22 @@ public class FiliereServiceImpl implements FiliereService {
             throw new RuntimeException("Filiere not found for id :: " + id);
         }
 
-        return filiere;
+        BeanUtils.copyProperties(filiere, dto);
+        return dto;
+
+//        Optional<Filiere> opt = filierRepository.findById(id);
+//        Filiere filiere ;
+//        if (opt.isPresent()) {
+//            filiere = opt.get();
+//        } else {
+//            throw new RuntimeException("Filiere not found for id :: " + id);
+//        }
     }
 
     @Override
     public void updateFiliere(Filiere filiere) {
 
     }
-
 
 
     @Override

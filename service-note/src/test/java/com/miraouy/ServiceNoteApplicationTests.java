@@ -12,7 +12,7 @@ class ServiceNoteApplicationTests {
 
     @Test
     void contextLoads(NoteService noteService) throws NoteNotFound {
-       Note note= noteService.findNote("18",1L);
+       Note note= noteService.findNote(18L,1L);
 
     }
 

@@ -5,7 +5,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ModuleF {
-
+    private Long id;
     private  String name;
 
 }

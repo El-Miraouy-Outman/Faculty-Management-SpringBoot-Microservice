@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -16,6 +15,8 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
+
 public class Filiere {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,9 +27,9 @@ public class Filiere {
     private List<ModuleF> modules;
 
     //new at now
-    @OneToMany(mappedBy = "filiere", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "filier", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private List <Student> students ;
+    private List<Student> students;
 
 
 }
