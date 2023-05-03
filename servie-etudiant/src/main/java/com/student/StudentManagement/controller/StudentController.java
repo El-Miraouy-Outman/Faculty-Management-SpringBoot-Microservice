@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/students")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class StudentController {
     private final StudentService studentService;
 
@@ -23,7 +24,7 @@ public class StudentController {
 
     }
 
-    @GetMapping("")
+    @GetMapping
     public List<RespenseStudentDto> viewStudents() {
         System.out.println("controller");
         return studentService.getAllStudents();
@@ -32,7 +33,7 @@ public class StudentController {
 
 
     @GetMapping("/{apogee}")
-    public RequestStudentDto viewStudent(@PathVariable(value = "apogee") Long apogee) {
+    public RespenseStudentDto viewStudent(@PathVariable(value = "apogee") Long apogee) {
         return studentService.getStudentByApogee(apogee);
 
     }

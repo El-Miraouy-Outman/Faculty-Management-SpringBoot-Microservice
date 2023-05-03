@@ -33,7 +33,7 @@ public class FiliereServiceImpl implements FiliereService {
         List<RespenseFiliereDto> respenseFiliereDtos = new ArrayList<>();
         for (Filiere i : filieres) {
             RespenseFiliereDto response = RespenseFiliereDto.builder().name(i.getName())
-                    .modules(i.getModules())
+                    .id(i.getId())
                     .build();
             respenseFiliereDtos.add(response);
         }

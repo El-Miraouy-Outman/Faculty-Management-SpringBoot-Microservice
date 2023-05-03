@@ -43,7 +43,7 @@ public class NoteServiceImpl implements NoteService{
         ModuleF module=moduleClient.viewModule(noteRequestDto.getIdModule());
         System.out.println(module);
         System.out.println("helloooo****");
-        Student student=studentClient.getStudent(noteRequestDto.getApogee());
+        Student student=studentClient.viewStudent(noteRequestDto.getApogee());
         System.out.println(student);
         Note note=Note.builder()
                 .note(noteRequestDto.getNote())
@@ -73,15 +73,14 @@ public class NoteServiceImpl implements NoteService{
     public NoteResponseDto findNoteByStudentAndModule(Long apogee, Long idModule) throws NoteNotFound {
         Optional<Note> note = Optional.ofNullable(noteRepository.findByApogeeAndIdModule(apogee, idModule)
                 .orElseThrow(() -> new NoteNotFound("Note not found")));
-        System.out.println(note);
-        Student student =studentClient.getStudent(apogee);
-        System.out.println(student.toString());
-        ModuleF moduleF = moduleClient.viewModule(idModule);
-        System.out.println(moduleF.toString());
-        Filiere filiere = filiereClient.viewFiliere(student.getFilier().getId());
-        student.setModuleF(moduleF);
-        student.setFilier(filiere);
-       NoteResponseDto noteResponseDto=NoteResponseDto
+       Student student =studentClient.viewStudent(apogee);
+        System.out.println(student.getApogee());
+     ModuleF moduleF = moduleClient.viewModule(idModule);
+//       // System.out.println(moduleF.toString());
+     Filiere filiere = filiereClient.viewFiliere(student.getFiliere().getId());
+//        student.setModuleF(moduleF);
+//        student.setFiliere(filiere);
+          NoteResponseDto noteResponseDto=NoteResponseDto
                .builder()
                .note(note.get().getNote())
                .idModule(idModule)
@@ -97,7 +96,7 @@ public class NoteServiceImpl implements NoteService{
         if (notes.isEmpty()) {
             throw new NoteNotFound("No notes found for apogee: " + apogee);
         }
-        Student student= studentClient.getStudent(apogee);
+        Student student= studentClient.viewStudent(apogee);
         return notes.stream().map(note -> new NoteResponseDto(note.getNote(),student,note.getIdModule(),note.getIdFiliere()))
                 .collect(Collectors.toList());
     }
@@ -108,7 +107,7 @@ public class NoteServiceImpl implements NoteService{
         return notes.stream()
                 .filter(note -> note.getIdModule().equals(idModule))
                 .map(note -> {
-                    Student student= studentClient.getStudent(note.getApogee());     //to mush call for database
+                    Student student= studentClient.viewStudent(note.getApogee());     //to mush call for database
                     return new NoteResponseDto(note.getNote(), student, note.getIdModule(), note.getIdFiliere());
                 })
                 .collect(Collectors.toList());
@@ -125,7 +124,7 @@ public class NoteServiceImpl implements NoteService{
 
     @Override
     public NoteResponseDto updateNote(Long apogee,Long idModule,NoteRequestDto noteRequest) throws NoteNotFound {
-        Student student= studentClient.getStudent(apogee);
+        Student student= studentClient.viewStudent(apogee);
         Note noteToUpdate = noteRepository.findByApogeeAndIdModule(apogee, idModule)
                 .orElseThrow(() -> new NoteNotFound("Note not found"));
         BeanUtils.copyProperties(noteRequest,noteToUpdate);

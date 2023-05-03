@@ -12,7 +12,7 @@ import java.util.List;
 public interface StudentService {
     public void saveStudent(StudentPojo dataPojo);
     List<RespenseStudentDto> getAllStudents();
-    RequestStudentDto getStudentByApogee(Long apogee);
+    RespenseStudentDto getStudentByApogee(Long apogee);
     void updateStudent(Student student);
     void deleteStudent(Long apogee);
     List<Carriere> getCarrieresByStudentId(Long StudentId);

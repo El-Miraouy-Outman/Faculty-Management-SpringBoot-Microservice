@@ -1,6 +1,7 @@
 package com.student.StudentManagement.services;
 
 import com.student.StudentManagement.dto.RequestStudentDto;
+import com.student.StudentManagement.dto.RespenseFiliereDto;
 import com.student.StudentManagement.dto.RespenseStudentDto;
 import com.student.StudentManagement.model.Carriere;
 import com.student.StudentManagement.model.Filiere;
@@ -31,35 +32,33 @@ public class StudentServiceImpl implements StudentService {
     public void saveStudent(StudentPojo dataPojo) {
         Filiere filiere = filierRepository.findById(dataPojo.getIdFiliere())
                 .orElseThrow(() -> new RuntimeException(" This Filiere is not exist in database"));
-
         Student student = new Student();
-
         BeanUtils.copyProperties(dataPojo, student);
-
-        student.setFilier(filiere);
-
+        student.setFiliere(filiere);
         filierRepository.save(filiere);
-
         studentRepository.save(student);
         System.out.println("created with success !");
-
     }
-
     @Override
     public List<RespenseStudentDto> getAllStudents() {
         List<Student> students = studentRepository.findAll();
         List<RespenseStudentDto> respenseStudentDtoList = new ArrayList<>();
 
         for (Student i : students) {
-            RespenseStudentDto respense = RespenseStudentDto.builder().cin(i.getCin())
+            Filiere filiere=i.getFiliere();
+            RespenseFiliereDto respenseFiliereDto=RespenseFiliereDto
+                    .builder()
+                    .id(filiere.getId())
+                    .build();
+            respenseFiliereDto.setName(i.getFiliere().getName());
+
+            RespenseStudentDto respense = RespenseStudentDto.builder()
                     .nom(i.getNom())
                     .prenom(i.getPrenom())
                     .cne(i.getCne())
                     .apogee(i.getApogee())
-                    .email(i.getEmail())
                     .genre(i.getGenre())
-                    .carriere(i.getCarrieres())
-                    .filiere(i.getFilier())
+                    .filiere(respenseFiliereDto)
                     .build();
             respenseStudentDtoList.add(respense);
         }
@@ -67,17 +66,30 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public RequestStudentDto getStudentByApogee(Long apogee) {
-        RequestStudentDto dto = RequestStudentDto.builder().build();
+    public RespenseStudentDto getStudentByApogee(Long apogee) {
         Student std = studentRepository.getStudentByApogee(apogee);
         Optional<Student> opt = studentRepository.findById(std.getId());
         Student student;
         if (opt.isPresent()) {
             student = opt.get();
+            System.out.println(student.getFiliere().getName());
+
         } else {
             throw new RuntimeException("Student not found for apogee :: " + apogee);
         }
-        BeanUtils.copyProperties(student, dto);
+
+        Filiere filiere=student.getFiliere();
+        RespenseFiliereDto respenseFiliereDto=RespenseFiliereDto
+                .builder().build();
+        respenseFiliereDto.setName(filiere.getName());
+        respenseFiliereDto.setId(filiere.getId());
+        RespenseStudentDto dto = RespenseStudentDto
+                .builder()
+                .cne(student.getCne())
+                .filiere(respenseFiliereDto)
+                .nom(student.getNom())
+                .prenom(student.getPrenom())
+                .apogee(student.getApogee()).build();
         return dto;
     }
 

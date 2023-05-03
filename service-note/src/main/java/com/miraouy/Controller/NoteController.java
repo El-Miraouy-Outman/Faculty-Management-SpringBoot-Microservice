@@ -1,7 +1,7 @@
 package com.miraouy.Controller;
 
-import com.miraouy.Exception.Filiere.FiliereNotFound;
-import com.miraouy.Exception.ModuleF.ModuleNotFound;
+
+import com.miraouy.Exception.Note.NoteAlreadyExist;
 import com.miraouy.Exception.Note.NoteNotFound;
 import com.miraouy.dto.Request.NoteRequestDto;
 import com.miraouy.dto.Response.NoteResponseDto;
@@ -25,7 +25,7 @@ public class NoteController  {
 
 
     @PostMapping
-    public NoteResponseDto addNote(@RequestBody NoteRequestDto note) {
+    public NoteResponseDto addNote(@RequestBody NoteRequestDto note) throws NoteAlreadyExist {
         System.out.println("bonsoir bonjor");
         return noteService.addNote(note);
     }
@@ -47,7 +47,7 @@ public class NoteController  {
 
     //listes des notes d'une module pour une filiere
     @GetMapping("/filieres/{idFiliere}/modules/{idModule}")
-    public List<NoteResponseDto>  findNoteFiliereModule(@PathVariable Long idFiliere , @PathVariable Long idModule) throws ModuleNotFound, FiliereNotFound {
+    public List<NoteResponseDto>  findNoteFiliereModule(@PathVariable Long idFiliere , @PathVariable Long idModule){
         return noteService.findNoteFiliereAndModule(idFiliere, idModule);
     }
 

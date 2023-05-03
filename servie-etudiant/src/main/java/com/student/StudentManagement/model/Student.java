@@ -3,10 +3,7 @@ package com.student.StudentManagement.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.student.StudentManagement.enumurations.Diplomat;
 import com.student.StudentManagement.enumurations.Gender;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,6 +11,7 @@ import java.util.List;
 
 @Entity(name = "student")
 @Data
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -45,7 +43,7 @@ public class Student {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "filiere_id", nullable = true)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Filiere filier;
+    private Filiere filiere;
     @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Carriere> carrieres;

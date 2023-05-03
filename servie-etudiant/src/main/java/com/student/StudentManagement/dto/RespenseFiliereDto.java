@@ -12,7 +12,8 @@ import java.util.List;
 @Data
 @Builder
 public class RespenseFiliereDto {
-    private Long id;
+    private  Long id;
     private String name ;
-    private List<ModuleF> modules;
+    //private List<RespenseModuleFDto> modules;
+   // private List<ModuleF> modules;
 }
