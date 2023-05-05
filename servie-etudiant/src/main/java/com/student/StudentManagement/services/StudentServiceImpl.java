@@ -48,8 +48,9 @@ public class StudentServiceImpl implements StudentService {
             Filiere filiere=i.getFiliere();
             RespenseFiliereDto respenseFiliereDto=RespenseFiliereDto
                     .builder()
-                    .id(filiere.getId())
                     .build();
+            respenseFiliereDto.setId(filiere.getId());
+            respenseFiliereDto.setName(filiere.getName());
             respenseFiliereDto.setName(i.getFiliere().getName());
 
             RespenseStudentDto respense = RespenseStudentDto.builder()
@@ -83,6 +84,7 @@ public class StudentServiceImpl implements StudentService {
                 .builder().build();
         respenseFiliereDto.setName(filiere.getName());
         respenseFiliereDto.setId(filiere.getId());
+
         RespenseStudentDto dto = RespenseStudentDto
                 .builder()
                 .cne(student.getCne())

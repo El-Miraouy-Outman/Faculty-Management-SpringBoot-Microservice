@@ -74,18 +74,13 @@ public class NoteServiceImpl implements NoteService{
         Optional<Note> note = Optional.ofNullable(noteRepository.findByApogeeAndIdModule(apogee, idModule)
                 .orElseThrow(() -> new NoteNotFound("Note not found")));
        Student student =studentClient.viewStudent(apogee);
+       ModuleF module=moduleClient.viewModule(idModule);
         System.out.println(student.getApogee());
-     ModuleF moduleF = moduleClient.viewModule(idModule);
-//       // System.out.println(moduleF.toString());
-     Filiere filiere = filiereClient.viewFiliere(student.getFiliere().getId());
-//        student.setModuleF(moduleF);
-//        student.setFiliere(filiere);
           NoteResponseDto noteResponseDto=NoteResponseDto
                .builder()
                .note(note.get().getNote())
-               //.idModule(idModule)
                .student(student)
-              // .idFiliere(filiere.getId())
+                  .module(module)
                .build();
         return noteResponseDto;
     }
@@ -96,16 +91,11 @@ public class NoteServiceImpl implements NoteService{
         if (notes.isEmpty()) {
             throw new NoteNotFound("No notes found for apogee: " + apogee);
         }
-        Student student= studentClient.viewStudent(apogee);
-        NoteResponseDto noteResponseDto = null;
-        return notes.stream().map(note ->{
-                    Filiere filiere=filiereClient.viewFiliere(note.getIdFiliere());
-                    ModuleF module=moduleClient.viewModule(note.getIdModule());
-                    noteResponseDto.setNote(note.getNote());
-                    noteResponseDto.setModule(module);
 
-                    noteResponseDto.setStudent(student);
-                    return noteResponseDto;
+        Student student= studentClient.viewStudent(apogee);
+          return  notes.stream()
+                .map(note -> {
+                    return new NoteResponseDto(note.getNote(), student,moduleClient.viewModule(note.getIdModule()) );
                 })
                 .collect(Collectors.toList());
     }
@@ -116,7 +106,7 @@ public class NoteServiceImpl implements NoteService{
         return notes.stream()
                 .filter(note -> note.getIdModule().equals(idModule))
                 .map(note -> {
-                    Student student= studentClient.viewStudent(note.getApogee());     //to mush call for database
+                    Student student= studentClient.viewStudent(note.getApogee());
                     return new NoteResponseDto(note.getNote(), student,moduleClient.viewModule(note.getIdModule()) );
                 })
                 .collect(Collectors.toList());

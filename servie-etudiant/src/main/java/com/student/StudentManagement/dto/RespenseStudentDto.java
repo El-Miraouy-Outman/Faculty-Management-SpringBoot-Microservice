@@ -20,8 +20,8 @@ public class RespenseStudentDto {
     private String prenom ;
     private String cne ;
    // private String email ;
-    //private Gender genre ;
-    // private Filiere filiere;
+    private Gender genre ;
+    private RespenseFiliereDto filiere;
     //private List<Carriere> carriere;
     //private RespenseFiliereDto filiere;
     //private RespenseModuleFDto module;
