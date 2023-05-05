@@ -33,7 +33,7 @@ public class NoteServiceImpl implements NoteService{
         this.moduleClient = moduleClient;
         this.filiereClient = filiereClient;
     }
-
+    // est regler
     @Override
     public NoteResponseDto addNote(NoteRequestDto noteRequestDto) throws NoteAlreadyExist {
         Note findNote=noteRepository.findByApogeeAndIdModule(noteRequestDto.getApogee(),noteRequestDto.getIdModule()).orElse(null);
@@ -68,7 +68,7 @@ public class NoteServiceImpl implements NoteService{
        System.out.println(note);
        return note;
     }
-
+   // est regler
     @Override
     public NoteResponseDto findNoteByStudentAndModule(Long apogee, Long idModule) throws NoteNotFound {
         Optional<Note> note = Optional.ofNullable(noteRepository.findByApogeeAndIdModule(apogee, idModule)
@@ -84,7 +84,7 @@ public class NoteServiceImpl implements NoteService{
                .build();
         return noteResponseDto;
     }
-
+    // est regler
     @Override
     public List<NoteResponseDto> findNotesEtudiant(Long apogee) throws NoteNotFound {
         List<Note> notes = noteRepository.findAllByApogee(apogee);
@@ -99,7 +99,7 @@ public class NoteServiceImpl implements NoteService{
                 })
                 .collect(Collectors.toList());
     }
-
+    // est regler
     @Override
     public List<NoteResponseDto> findNoteFiliereAndModule(Long idFiliere, Long idModule) {
         List<Note> notes = noteRepository.findAllByIdFiliere(idFiliere);
