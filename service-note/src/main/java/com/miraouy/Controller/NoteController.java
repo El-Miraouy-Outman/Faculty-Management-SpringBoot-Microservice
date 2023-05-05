@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/notes")
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:4200")
 @RefreshScope
 public class NoteController  {
     private final NoteService noteService;
@@ -26,7 +26,6 @@ public class NoteController  {
 
     @PostMapping
     public NoteResponseDto addNote(@RequestBody NoteRequestDto note) throws NoteAlreadyExist {
-        System.out.println("bonsoir bonjor");
         return noteService.addNote(note);
     }
 

@@ -83,9 +83,9 @@ public class NoteServiceImpl implements NoteService{
           NoteResponseDto noteResponseDto=NoteResponseDto
                .builder()
                .note(note.get().getNote())
-               .idModule(idModule)
+               //.idModule(idModule)
                .student(student)
-               .idFiliere(filiere.getId())
+              // .idFiliere(filiere.getId())
                .build();
         return noteResponseDto;
     }
@@ -97,7 +97,16 @@ public class NoteServiceImpl implements NoteService{
             throw new NoteNotFound("No notes found for apogee: " + apogee);
         }
         Student student= studentClient.viewStudent(apogee);
-        return notes.stream().map(note -> new NoteResponseDto(note.getNote(),student,note.getIdModule(),note.getIdFiliere()))
+        NoteResponseDto noteResponseDto = null;
+        return notes.stream().map(note ->{
+                    Filiere filiere=filiereClient.viewFiliere(note.getIdFiliere());
+                    ModuleF module=moduleClient.viewModule(note.getIdModule());
+                    noteResponseDto.setNote(note.getNote());
+                    noteResponseDto.setModule(module);
+
+                    noteResponseDto.setStudent(student);
+                    return noteResponseDto;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -108,7 +117,7 @@ public class NoteServiceImpl implements NoteService{
                 .filter(note -> note.getIdModule().equals(idModule))
                 .map(note -> {
                     Student student= studentClient.viewStudent(note.getApogee());     //to mush call for database
-                    return new NoteResponseDto(note.getNote(), student, note.getIdModule(), note.getIdFiliere());
+                    return new NoteResponseDto(note.getNote(), student,moduleClient.viewModule(note.getIdModule()) );
                 })
                 .collect(Collectors.toList());
     }
@@ -132,7 +141,7 @@ public class NoteServiceImpl implements NoteService{
         return NoteResponseDto.builder()
                 .student(student)
                 .note(noteToUpdate.getNote())
-                .idModule(idModule)
+               // .idModule(idModule)
                 .build();
     }
 }

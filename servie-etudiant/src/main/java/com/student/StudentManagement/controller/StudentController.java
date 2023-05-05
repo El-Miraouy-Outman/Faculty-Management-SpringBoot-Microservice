@@ -1,10 +1,8 @@
 package com.student.StudentManagement.controller;
 
-import com.student.StudentManagement.dto.RequestStudentDto;
 import com.student.StudentManagement.dto.RespenseStudentDto;
 import com.student.StudentManagement.model.Carriere;
 import com.student.StudentManagement.model.StudentPojo;
-import com.student.StudentManagement.services.CarriereService;
 import com.student.StudentManagement.services.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/students")
 @RequiredArgsConstructor
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:4200")
 public class StudentController {
     private final StudentService studentService;
 

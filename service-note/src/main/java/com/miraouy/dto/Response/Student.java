@@ -8,7 +8,7 @@ public class Student {
     private  String nom;
     private String prenom;
     private String cne;
-    private ModuleF moduleF;
+    //private ModuleF module;
     private Filiere filiere;
 
 
