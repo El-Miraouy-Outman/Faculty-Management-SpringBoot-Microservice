@@ -10,7 +10,6 @@ import java.util.List;
 
 public interface NoteService {
     public NoteResponseDto addNote(NoteRequestDto note) throws NoteAlreadyExist;
-    public Note findNote(Long apogee,Long idModule);
     NoteResponseDto findNoteByStudentAndModule(Long apogee, Long idModule) throws NoteNotFound;
     public List<NoteResponseDto> findNotesEtudiant(Long apogee) throws NoteNotFound;
     public List<NoteResponseDto> findNoteFiliereAndModule(Long idFiliere,Long idModule) ;

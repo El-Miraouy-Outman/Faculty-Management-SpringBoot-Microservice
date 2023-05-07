@@ -61,8 +61,5 @@ public class NoteController  {
       return   noteService.updateNote(apogee,idModule,requestDto);
 
     }
-    @GetMapping("/test/{apogee}/{idModule}")
-    public Note getNoteSimple(@PathVariable Long apogee,@PathVariable Long idModule){
-       return  noteService.findNote(apogee, idModule);
-    }
+
 }

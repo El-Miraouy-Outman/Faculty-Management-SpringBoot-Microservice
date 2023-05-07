@@ -19,6 +19,7 @@ public class HandlerNoteExeptions {
         errorB.setStatus(HttpStatus.BAD_REQUEST.value());
         errorB.setError(HttpStatus.BAD_REQUEST.name());
         errorB.setMessage(ex.getMessage());
+        System.out.println("***********"+errorB.getMessage());
         return new ResponseEntity<>(errorB, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler
@@ -28,6 +29,7 @@ public class HandlerNoteExeptions {
         errorB.setStatus(HttpStatus.BAD_REQUEST.value());
         errorB.setError(HttpStatus.BAD_REQUEST.name());
         errorB.setMessage(ex.getMessage());
+        System.out.println(errorB.getMessage());
         return new ResponseEntity<>(errorB, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 }

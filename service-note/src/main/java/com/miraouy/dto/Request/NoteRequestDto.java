@@ -1,14 +1,16 @@
 package com.miraouy.dto.Request;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 @Builder
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class NoteRequestDto {
 
     private Float note;
     private Long apogee;
     private Long idModule;
-    private Long idFiliere;
+
 }

@@ -44,11 +44,13 @@ public class NoteServiceImpl implements NoteService{
         System.out.println(module);
         System.out.println("helloooo****");
         Student student=studentClient.viewStudent(noteRequestDto.getApogee());
+        Long idfiliere =student.getFiliere().getId();
         System.out.println(student);
         Note note=Note.builder()
                 .note(noteRequestDto.getNote())
                 .apogee(noteRequestDto.getApogee())
                 .idModule(noteRequestDto.getIdModule())
+                .idFiliere(idfiliere)
                 .build();
         System.out.println(note);
         Note noteSave=noteRepository.save(note);
@@ -56,18 +58,14 @@ public class NoteServiceImpl implements NoteService{
         // traitement pour chercher l'etudiant apres la construction de l'autre microservice
         NoteResponseDto noteResponseDto=NoteResponseDto
                 .builder()
-                .note(note.getNote())
+                .note(noteSave.getNote())
                 .student(student)
+                .module(module)
                 .build();
         return noteResponseDto;
     }
 
-    @Override
-    public Note findNote(Long apogee, Long idModule) {
-      Note note=  noteRepository.findByApogeeAndIdModule(apogee, idModule).get();
-       System.out.println(note);
-       return note;
-    }
+
    // est regler
     @Override
     public NoteResponseDto findNoteByStudentAndModule(Long apogee, Long idModule) throws NoteNotFound {
